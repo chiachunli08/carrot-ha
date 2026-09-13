@@ -1,4 +1,4 @@
-from homeassistant.components.device_tracker.config_entry import TrackerEntity
+from homeassistant.components.device_tracker import TrackerEntity
 from homeassistant.components.device_tracker import SourceType
 from .entity import VehicleEntity
 
