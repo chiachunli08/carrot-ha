@@ -26,7 +26,7 @@ const battery_history = [
   buildHistoryDay('2026-09-11', 18, makeHours([48,48,47,45,44,46,60,58,56,54,53,52,51,51,50,50,49,49,48,48,47,47,46,46])),
   buildHistoryDay('2026-09-12', 31, makeHours([46,45,42,40,42,55,68,66,64,62,60,58,56,55,54,53,52,51,50,50,49,48,47,46])),
   buildHistoryDay('2026-09-13', 15, makeHours([46,46,45,44,43,45,58,56,55,54,53,52,52,51,51,50,50,49,49,48,48,47,47,46])),
-  buildHistoryDay('2026-09-14', 25, lastDayHours, { 0:true,1:true,2:true,3:true,4:true, 10:true, 19:true,20:true,21:true }),
+  buildHistoryDay('2026-09-14', 25, lastDayHours, { 0:true,1:true,2:true,3:true,4:true, 7:true,8:true,9:true,10:true, 19:true,20:true,21:true }),
 ];
 
 const dashValues = {
