@@ -13,7 +13,7 @@ Carrotpilot이 실행 중인 콤마에서 차량 정보를 수집하여 Cloudfla
 3. Carrot HA를 다운로드하고 HA를 재시작합니다.
 4. 설정 → 기기 및 서비스 → 통합 추가 → Carrot HA. 정해둔 장치 ID와 전용 토큰을 입력합니다.
 5. 통합의 구성에서 Worker 주소, 읽기 토큰, 차량 모델, SOC 계산 용량을 입력합니다. 배터리 용량은 차량별로 확인하세요.
-6. 대시보드 리소스에 `/carrot_ha_static/carrot-dashboard.js?v=0.4.2`을 **JavaScript 모듈**로 추가합니다.
+6. 대시보드 리소스에 `/carrot_ha_static/carrot-dashboard.js`을 **JavaScript 모듈**로 추가합니다.
 7. 수동 카드에 다음을 입력합니다. 장치 ID는 통합과 콤마에 입력한 값과 같아야 합니다.
 
 ```yaml
@@ -30,7 +30,7 @@ vehicle_name: ID. Buzz
 
 [기록을 유지하면서 HACS로 이전하기](docs/MIGRATION.md)를 먼저 읽으세요. **기존 통합을 삭제하거나 장치 ID를 바꾸지 마세요.** HACS는 프로그램 파일을 업데이트하며, 별도의 `/config/carrot_ha` 기록 DB를 삭제하는 기능은 넣지 않았습니다. 자동 기록 삭제도 적용하지 않았습니다.
 
-HACS 업데이트 후 HA를 재시작하고 리소스의 `v` 값을 새 릴리스 버전으로 바꿉니다. 대시보드 JS와 지도 라이브러리도 통합에 포함되어 함께 업데이트됩니다. 콤마·Cloudflare는 HACS가 업데이트하지 않습니다. 해당 변경이 필요한 릴리스는 별도 안내합니다.
+HACS 업데이트 후 HA를 재시작하고 대시보드를 다시 엽니다. 화면 파일의 버전은 자동으로 선택됩니다. 대시보드 JS와 지도 라이브러리도 통합에 포함되어 함께 업데이트됩니다. 콤마·Cloudflare는 HACS가 업데이트하지 않습니다. 해당 변경이 필요한 릴리스는 별도 안내합니다.
 
 ## 다른 MEB 차량
 
@@ -55,4 +55,4 @@ Cloudflare 및 CAN 참조 코드: `cloudflare/SOURCE.md`, `cloudflare/LICENSE.up
 
 HA 사용자 언어가 한국어이면 한국어, 그 외에는 영어로 표시합니다. 카드 설정에 `language: en` 또는 `language: ko`를 넣으면 고정할 수 있고 `language: auto`는 HA를 따릅니다. HA 기기 페이지의 엔터티 이름은 변경하지 않습니다.
 
-업데이트 후 HA를 재시작하고 기존 리소스 URL을 `/carrot_ha_static/carrot-dashboard.js?v=0.4.2`로 변경하세요.
+업데이트 후 HA를 재시작하고 기존 리소스 URL을 `/carrot_ha_static/carrot-dashboard.js`로 변경하세요.

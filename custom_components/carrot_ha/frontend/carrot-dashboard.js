@@ -1,28 +1,8 @@
-import KoreanDashboard from './carrot-dashboard-ko.js';
-import EnglishDashboard from './carrot-dashboard-en.js';
-if(!customElements.get('carrot-dashboard-ko'))customElements.define('carrot-dashboard-ko', KoreanDashboard);
-if(!customElements.get('carrot-dashboard-en'))customElements.define('carrot-dashboard-en', EnglishDashboard);
-class LocalizedDashboard extends HTMLElement {
-  constructor(){super();this.style.display='block';}
-  setConfig(config){this.config=config;this.updateLanguage();}
-  set hass(hass){this._hass=hass;this.updateLanguage();}
-  getCardSize(){return this.card?.getCardSize()??8;}
-  getGridOptions(){return {columns:36,rows:'auto',min_columns:6};}
-  updateLanguage(){
-    if(!this.config)return;
-    const requested=this.config.language;
-    const language=(!requested||requested==='auto')?(this._hass?.locale?.language||this._hass?.language||navigator.language):requested;
-    const lang=String(language).toLowerCase().startsWith('ko')?'ko':'en';
-    if(this.lang!==lang){
-      this.card?.remove();this.lang=lang;
-      this.card=document.createElement('carrot-dashboard-'+lang);
-      this.replaceChildren(this.card);
-    }
-    if(this.appliedConfig!==this.config||this.configuredCard!==this.card){this.card.setConfig(this.config);this.appliedConfig=this.config;this.configuredCard=this.card;}
-    if(this._hass)this.card.hass=this._hass;
-  }
-}
-if(!customElements.get('carrot-history-card'))customElements.define('carrot-history-card',LocalizedDashboard);
-if(!customElements.get('carrot-dashboard-card'))customElements.define('carrot-dashboard-card',class extends LocalizedDashboard{});
-window.customCards=window.customCards||[];
-window.customCards.push({type:'carrot-dashboard-card',name:'Carrot HA — MEB',description:'Vehicle, trips, charging and battery history / 차량·주행·충전'});
+// Stable resource URL. Keep this bootstrap small and backwards compatible.
+const response=await fetch(new URL('/api/carrot_ha/frontend-version',import.meta.url),{cache:'no-store',credentials:'same-origin'});
+if(!response.ok)throw new Error(`Carrot HA version check failed (${response.status}). Restart Home Assistant and reload the dashboard.`);
+const {version}=await response.json();
+if(typeof version!=='string'||!/^\d+\.\d+\.\d+(?:[-+.][A-Za-z0-9.-]+)?$/.test(version))throw new Error('Carrot HA returned an invalid frontend version.');
+const runtime=new URL('./carrot-dashboard-runtime.js',import.meta.url);
+runtime.searchParams.set('v',version);
+await import(runtime.href);

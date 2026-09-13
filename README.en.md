@@ -13,7 +13,7 @@ The implementation was used on an ID.4 and adapted for configurable MEB vehicles
 3. Download Carrot HA and restart HA.
 4. Open Settings → Devices & services → Add integration → Carrot HA. Enter your chosen device ID and dedicated token.
 5. In the integration options, enter the Worker URL, read token, vehicle model, and SOC calculation capacity. Check the capacity for your specific vehicle.
-6. Add `/carrot_ha_static/carrot-dashboard.js?v=0.4.2` as a **JavaScript module** dashboard resource.
+6. Add `/carrot_ha_static/carrot-dashboard.js` as a **JavaScript module** dashboard resource.
 7. Add a manual card using the same device ID as the collector and integration:
 
 ```yaml
@@ -39,7 +39,7 @@ language: en
 
 Read [Migrating without losing records](docs/MIGRATION.en.md) first. **Do not delete your existing integration entry or change its device ID.** HACS updates application files. Carrot HA records are stored separately in `/config/carrot_ha`; automatic record deletion has not been implemented.
 
-After an HACS update, restart HA and change the resource URL's `v` value to the new release version. The dashboard and map library are bundled with the integration. HACS does **not** update the comma collector or Cloudflare service; releases that require those changes need separate installation steps.
+After an HACS update, restart HA and reopen the dashboard. The installed frontend version is selected automatically. The dashboard and map library are bundled with the integration. HACS does **not** update the comma collector or Cloudflare service; releases that require those changes need separate installation steps.
 
 ## Other MEB vehicles
 

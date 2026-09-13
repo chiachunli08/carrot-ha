@@ -19,4 +19,7 @@ vehicle_image_layout: legacy_id4
 다른 차량 사진은 vehicle_image_layout 줄을 생략하세요. 이 프리셋은 기존 ID.4 원본 전용이라 다른 사진에 적용하면 잘릴 수 있습니다.
 
 GitHub 수정 파일: custom_components/carrot_ha/frontend/carrot-dashboard.js, custom_components/carrot_ha/manifest.json, 이 안내 문서.
-Commit/Push 후 Release v0.4.1을 발행합니다. HACS 업데이트 후 HA 재시작, 기존 리소스를 /carrot_ha_static/carrot-dashboard.js?v=0.4.1 로 바꾸고 카드에 위 옵션을 추가합니다.
+Commit/Push 후 Release v0.4.1을 발행합니다. HACS 업데이트 후 HA 재시작, 기존 리소스를 /carrot_ha_static/carrot-dashboard.js 로 바꾸고 카드에 위 옵션을 추가합니다.
+
+
+For 0.4.3 and later / 0.4.3 이후 업데이트: [UPDATES.md](UPDATES.md).

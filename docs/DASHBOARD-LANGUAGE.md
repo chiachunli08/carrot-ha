@@ -6,13 +6,14 @@ Version 0.4.2 adds Korean and English dashboard rendering. The default follows H
 
 ## Updating / 업데이트
 
-Commit and push all three frontend JS files, manifest.json, and the documentation. Publish v0.4.2. Install the HACS update, restart HA, then change the existing resource URL to /carrot_ha_static/carrot-dashboard.js?v=0.4.2. Do not register the language modules separately.
+See [automatic update instructions](UPDATES.md). From 0.4.3, register only `/carrot_ha_static/carrot-dashboard.js`; the installed version is selected automatically. Do not register the runtime or language modules separately.
 
-GitHub Desktop에서 변경된 JS 3개와 manifest.json, 문서를 함께 Commit/Push하고 v0.4.2 릴리스를 발행합니다. HACS 업데이트 후 HA 재시작, 기존 리소스의 v 값을 0.4.2로 변경하세요. 언어별 JS를 별도 리소스로 추가하지 마세요.
+[자동 업데이트 안내](UPDATES.md)를 참고하세요. 0.4.3부터 고정 리소스 주소 하나만 등록하면 설치 버전을 자동으로 불러옵니다. 런타임이나 언어별 JS는 별도로 등록하지 않습니다.
 
 ## Source layout
 
-- carrot-dashboard.js: language selection and backwards-compatible card registration.
+- carrot-dashboard.js: stable bootstrap and installed-version lookup.
+- carrot-dashboard-runtime.js: language selection and backwards-compatible card registration.
 - carrot-dashboard-ko.js: Korean implementation.
 - carrot-dashboard-en.js: English implementation with the same behavior.
 

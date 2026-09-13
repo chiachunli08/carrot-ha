@@ -6,7 +6,7 @@
 2. **Keep the existing Carrot HA integration entry.** Deleting and recreating it may create a new entry ID and use a different database file.
 3. Add the repository to HACS as an Integration and download it. HACS manages the same `custom_components/carrot_ha` program directory.
 4. Restart HA. Keep the existing device ID, integration entry ID, entity unique IDs, and DB path.
-5. Edit the existing dashboard resource URL to `/carrot_ha_static/carrot-dashboard.js?v=0.4.1`. Do not load both the old and new JavaScript resources.
+5. Edit the existing dashboard resource URL to `/carrot_ha_static/carrot-dashboard.js`. Do not load both the old and new JavaScript resources.
 6. Keep the card's existing `device_id`. To retain your old ID.4 image, use `vehicle_image: /local/carrot-assets/id4.png` and `vehicle_name: ID.4 PRO`. For the original image with large margins, see the [legacy image option](VEHICLE-IMAGE.en.md).
 7. Check battery readings, recorded distance, trip/charge lists, and history charts. If something fails, restore the backup or previous program version instead of deleting the integration.
 

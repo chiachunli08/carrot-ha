@@ -15,6 +15,7 @@ async def async_setup(hass, config):
     from pathlib import Path
     from homeassistant.components.http import StaticPathConfig
     await hass.http.async_register_static_paths([StaticPathConfig('/carrot_ha_static', str(Path(__file__).parent / 'frontend'), False)])
+    hass.http.register_view(FrontendVersionView())
     hass.http.register_view(ReceiveView(hass))
     hass.http.register_view(HistoryView(hass))
     hass.http.register_view(DevicesView(hass))
@@ -154,3 +155,17 @@ class DashboardView(HomeAssistantView):
         data['vehicle_model']=runtime['entry'].options.get('vehicle_model','Volkswagen MEB')
         data['battery_history']=await self.hass.async_add_executor_job(history,runtime['archive'],runtime['entry'].data['device_id'],runtime['entry'].options.get('soc_capacity_kwh',78.0),self.hass.config.time_zone)
         return web.json_response({'device_id':runtime['entry'].data['device_id'],'values':data})
+
+
+class FrontendVersionView(HomeAssistantView):
+    """Public installed version only; no vehicle data or credentials."""
+    url = '/api/carrot_ha/frontend-version'
+    name = 'api:carrot_ha:frontend_version'
+    requires_auth = False
+
+    def __init__(self):
+        from pathlib import Path
+        self.version = json.loads((Path(__file__).parent / 'manifest.json').read_text(encoding='utf-8'))['version']
+
+    async def get(self, request):
+        return web.json_response({'version': self.version}, headers={'Cache-Control': 'no-store'})

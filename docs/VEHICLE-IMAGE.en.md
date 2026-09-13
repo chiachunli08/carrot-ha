@@ -18,4 +18,7 @@ vehicle_image_layout: legacy_id4
 
 Replace the placeholder with your existing device ID. Omit `vehicle_image_layout` for other images: this preset is specific to the original ID.4 artwork and could crop another image incorrectly.
 
-Maintainers: the image fix changes `custom_components/carrot_ha/frontend/carrot-dashboard.js`, `custom_components/carrot_ha/manifest.json`, and this documentation. Commit and push, then publish release `v0.4.1`. Users update through HACS, restart HA, change the resource to `/carrot_ha_static/carrot-dashboard.js?v=0.4.1`, and add the option above.
+Maintainers: the image fix changes `custom_components/carrot_ha/frontend/carrot-dashboard.js`, `custom_components/carrot_ha/manifest.json`, and this documentation. Commit and push, then publish release `v0.4.1`. Users update through HACS, restart HA, change the resource to `/carrot_ha_static/carrot-dashboard.js`, and add the option above.
+
+
+For 0.4.3 and later / 0.4.3 이후 업데이트: [UPDATES.md](UPDATES.md).
