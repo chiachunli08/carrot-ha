@@ -1,5 +1,7 @@
 # 기존 기록을 유지하면서 이전하기
 
+한국어 | [English](MIGRATION.en.md)
+
 1. HA 전체 백업을 만드세요. `/config/carrot_ha`는 실제 주행·충전·상태 DB입니다. 이것만이 아니라 HA 설정과 엔터티 등록 정보도 포함한 전체 백업을 권합니다.
 2. 기존 Carrot HA **통합 항목은 그대로 둡니다**. 삭제 후 재등록하면 통합 항목 ID가 달라져 다른 DB 파일을 사용할 수 있습니다.
 3. HACS Custom repositories에 저장소를 Integration으로 추가하고 다운로드합니다. 같은 `custom_components/carrot_ha` 프로그램 폴더를 관리하도록 합니다.
