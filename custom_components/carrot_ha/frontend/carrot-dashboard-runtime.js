@@ -8,7 +8,8 @@ const [{default:KoreanDashboard},{default:EnglishDashboard}]=await Promise.all([
 if(!customElements.get('carrot-dashboard-ko'))customElements.define('carrot-dashboard-ko', KoreanDashboard);
 if(!customElements.get('carrot-dashboard-en'))customElements.define('carrot-dashboard-en', EnglishDashboard);
 class LocalizedDashboard extends HTMLElement {
-  constructor(){super();this.style.display='block';}
+  constructor(){super();}
+  connectedCallback(){this.style.display='block';}
   setConfig(config){this.config=config;this.updateLanguage();}
   set hass(hass){this._hass=hass;this.updateLanguage();}
   getCardSize(){return this.card?.getCardSize()??8;}
