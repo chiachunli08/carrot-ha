@@ -4,11 +4,11 @@ Version 0.4.2 adds Korean and English dashboard rendering. The default follows H
 
 0.4.2는 HA 언어에 따라 한국어·영어 화면을 제공합니다. 카드의 language 옵션으로 고정할 수도 있습니다. 메뉴·날짜·요일·그래프·오류 안내를 번역하며 실제 데이터와 엔터티 ID는 변경하지 않습니다.
 
-## Updating / 업데이트
+## Resource setup / 리소스 등록
 
-See [automatic update instructions](UPDATES.md). From 0.4.3, register only `/carrot_ha_static/carrot-dashboard.js`; the installed version is selected automatically. Do not register the runtime or language modules separately.
+Register `/carrot_ha_static/carrot-dashboard.js` as a JavaScript module. Do not register the runtime or language modules separately.
 
-[자동 업데이트 안내](UPDATES.md)를 참고하세요. 0.4.3부터 고정 리소스 주소 하나만 등록하면 설치 버전을 자동으로 불러옵니다. 런타임이나 언어별 JS는 별도로 등록하지 않습니다.
+`/carrot_ha_static/carrot-dashboard.js`를 JavaScript 모듈로 등록하세요. 런타임과 언어별 파일은 별도로 등록하지 않습니다.
 
 ## Source layout
 

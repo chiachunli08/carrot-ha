@@ -15,9 +15,3 @@
 
 HACS 사용자들은 저장소 주소를 Custom repositories에 추가해 설치합니다. HACS 기본 목록에 등재되는 것과 별개입니다.
 
-## 다음 업데이트
-
-소스를 수정하고 manifest.json의 version을 예: 0.4.1로 올립니다. 테스트 후 Commit → Push → 새 Release `v0.4.1`을 발행합니다. HACS가 조회한 뒤 업데이트를 제공하며 사용자가 설치합니다. 콤마/Cloudflare 변경이 있으면 별도 절차를 릴리스 설명에 반드시 적습니다.
-
-공식 요구사항: https://hacs.xyz/docs/publish/integration/
-브랜드 아이콘: https://developers.home-assistant.io/docs/core/integration/brand_images/

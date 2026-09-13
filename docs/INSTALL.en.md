@@ -43,7 +43,7 @@ Follow the HACS steps in the [overview](../README.en.md). Choose a device ID suc
 
 ## 3. Install the collector on comma
 
-Park the vehicle first. Use an SSH file transfer application such as WinSCP to copy the **contents** of `collector` into `/data/id4-collector` on comma. Existing users must preserve `connection.json` and `state`.
+Park the vehicle first. Use an SSH file transfer application such as WinSCP to copy the **contents** of `collector` into `/data/id4-collector` on comma.
 
 In comma SSH, for a new installation:
 
@@ -73,4 +73,4 @@ ID. Buzz has not yet been validated on a real vehicle. Record the model year, ba
 
 ## Limitations
 
-HACS updates the HA integration only. Follow release notes for collector and Cloudflare updates. Charging classification, power, and SOC are estimates. The graph may carry forward the last known value through missing periods, but excludes those carried values from consumption calculations. Automatic retention deletion is not enabled.
+Charging classification, power, and SOC are estimates. The graph may carry forward the last known value through missing periods, but excludes those carried values from consumption calculations. Automatic retention deletion is not enabled.

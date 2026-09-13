@@ -35,12 +35,6 @@ language: en
 ```
 
 
-## Existing installations and updates
-
-Read [Migrating without losing records](docs/MIGRATION.en.md) first. **Do not delete your existing integration entry or change its device ID.** HACS updates application files. Carrot HA records are stored separately in `/config/carrot_ha`; automatic record deletion has not been implemented.
-
-After an HACS update, restart HA and reopen the dashboard. The installed frontend version is selected automatically. The dashboard and map library are bundled with the integration. HACS does **not** update the comma collector or Cloudflare service; releases that require those changes need separate installation steps.
-
 ## Other MEB vehicles
 
 - Start with Carrotpilot already working on your vehicle.

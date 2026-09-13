@@ -1,4 +1,4 @@
-# Vehicle image requirements (0.4.1)
+# Vehicle image requirements
 
 [한국어](VEHICLE-IMAGE.md) | English | [Overview](../README.en.md)
 
@@ -6,19 +6,11 @@ Use transparent PNG or WebP where possible. Recommended canvas: **1600 × 1000 p
 
 Empty space matters more than pixel count. The whole image is fitted proportionally, so large transparent margins make the car look small. The image area is 250px high on desktop and 155px on mobile, constrained to the card width. Increasing resolution without reducing the relative margins will not enlarge the visible car.
 
-For the original 4096 × 2729 ID.4 front image, add the following option. It uses the old dashboard's viewing area without modifying the image file:
-
 ```yaml
 type: custom:carrot-dashboard-card
-device_id: KEEP_YOUR_EXISTING_VALUE
-vehicle_name: ID.4 PRO
-vehicle_image: /local/carrot-assets/id4.png
-vehicle_image_layout: legacy_id4
+device_id: my-meb
+vehicle_name: ID. Buzz
+vehicle_image: /local/my-car.png
 ```
 
-Replace the placeholder with your existing device ID. Omit `vehicle_image_layout` for other images: this preset is specific to the original ID.4 artwork and could crop another image incorrectly.
-
-Maintainers: the image fix changes `custom_components/carrot_ha/frontend/carrot-dashboard.js`, `custom_components/carrot_ha/manifest.json`, and this documentation. Commit and push, then publish release `v0.4.1`. Users update through HACS, restart HA, change the resource to `/carrot_ha_static/carrot-dashboard.js`, and add the option above.
-
-
-For 0.4.3 and later / 0.4.3 이후 업데이트: [UPDATES.md](UPDATES.md).
+Save the image as `/config/www/my-car.png`. Use the device ID chosen during installation.

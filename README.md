@@ -4,7 +4,7 @@
 
 Carrotpilot이 실행 중인 콤마에서 차량 정보를 수집하여 Cloudflare에 저장하고 Home Assistant에서 확인합니다. 주행 경로, 배터리 잔량, 충전 추정 기록, 최근 7일 배터리 그래프를 제공합니다. 차량 원격 제어 기능은 없습니다.
 
-**0.4.0 배포 후보.** ID.4에서 사용한 구현을 일반화한 버전입니다. ID. Buzz 등 다른 MEB 차량과 모든 Carrotpilot 브랜치의 호환성을 보장하지 않습니다. HA 2026.3 이상이 필요하며 다른 차량은 아래 사전 확인을 거치세요. 현재 대시보드 API는 HA 관리자 계정만 사용할 수 있습니다.
+ID.4에서 사용한 구현을 일반화한 버전입니다. ID. Buzz 등 다른 MEB 차량과 모든 Carrotpilot 브랜치의 호환성을 보장하지 않습니다. HA 2026.3 이상이 필요하며 다른 차량은 아래 사전 확인을 거치세요. 현재 대시보드 API는 HA 관리자 계정만 사용할 수 있습니다.
 
 ## 처음 설치
 
@@ -26,12 +26,6 @@ vehicle_name: ID. Buzz
 
 기본 이미지는 Carrot HA 아이콘입니다. 이미지 파일은 본인이 사용할 수 있는 것으로 준비하세요. 차량 상태 엔터티는 통합에서 자동으로 찾으므로 `test_id4` 같은 이름에 의존하지 않습니다. 필요하면 `charging_entity`, `online_entity`를 카드에 명시할 수 있습니다.
 
-## 기존 사용자 / 업데이트
-
-[기록을 유지하면서 HACS로 이전하기](docs/MIGRATION.md)를 먼저 읽으세요. **기존 통합을 삭제하거나 장치 ID를 바꾸지 마세요.** HACS는 프로그램 파일을 업데이트하며, 별도의 `/config/carrot_ha` 기록 DB를 삭제하는 기능은 넣지 않았습니다. 자동 기록 삭제도 적용하지 않았습니다.
-
-HACS 업데이트 후 HA를 재시작하고 대시보드를 다시 엽니다. 화면 파일의 버전은 자동으로 선택됩니다. 대시보드 JS와 지도 라이브러리도 통합에 포함되어 함께 업데이트됩니다. 콤마·Cloudflare는 HACS가 업데이트하지 않습니다. 해당 변경이 필요한 릴리스는 별도 안내합니다.
-
 ## 다른 MEB 차량
 
 - Carrotpilot이 해당 차량에서 정상 작동하는 상태에서 시작합니다.
@@ -51,8 +45,6 @@ Cloudflare 및 CAN 참조 코드: `cloudflare/SOURCE.md`, `cloudflare/LICENSE.up
 지도: Leaflet 및 OpenStreetMap. 지도 출처 표시는 유지해야 합니다.
 첨부 브랜드 이미지: 프로젝트 소유자가 제공한 이미지입니다. Carrotpilot·Volkswagen·Home Assistant의 공식 제품이나 공식 인증 통합이 아닙니다.
 
-## 대시보드 언어 (0.4.2)
+## 대시보드 언어
 
 HA 사용자 언어가 한국어이면 한국어, 그 외에는 영어로 표시합니다. 카드 설정에 `language: en` 또는 `language: ko`를 넣으면 고정할 수 있고 `language: auto`는 HA를 따릅니다. HA 기기 페이지의 엔터티 이름은 변경하지 않습니다.
-
-업데이트 후 HA를 재시작하고 기존 리소스 URL을 `/carrot_ha_static/carrot-dashboard.js`로 변경하세요.
