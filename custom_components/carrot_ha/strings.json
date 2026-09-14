@@ -34,5 +34,58 @@
       "invalid_capacity": "Enter a finite capacity between 20 and 150 kWh.",
       "invalid_cloud": "Enter an HTTPS base URL without a path and a view token."
     }
+  },
+  "entity": {
+    "sensor": {
+      "battery_soc": {"name": "Battery SOC"},
+      "total_odometer": {"name": "Total Odometer"},
+      "outside_temperature": {"name": "Outside Temperature"},
+      "aux_voltage": {"name": "12V Battery Voltage"},
+      "estimated_charging_power": {"name": "Estimated Charging Power"},
+      "battery_current": {"name": "High-Voltage Battery Current"},
+      "battery_stored_energy": {"name": "Battery Stored Energy"},
+      "hv_voltage": {"name": "High-Voltage Battery Voltage"},
+      "measured_capacity": {"name": "BMS Capacity Estimate"},
+      "soc_capacity": {"name": "SOC Calculation Capacity"},
+      "estimated_range": {"name": "Estimated Range"},
+      "blower_voltage": {"name": "Blower Control Voltage"},
+      "blower_level": {"name": "Blower Level"},
+      "driver_seat_heater": {"name": "Driver Seat Heater Level"},
+      "passenger_seat_heater": {"name": "Passenger Seat Heater Level"},
+      "recirculation": {"name": "Recirculation Signal"},
+      "current_speed": {"name": "Current Speed"},
+      "gps_accuracy": {"name": "GPS Accuracy"},
+      "heading": {"name": "Heading"},
+      "month_charge_total": {"name": "This Month Estimated Charge"},
+      "month_slow_charge": {"name": "This Month Slow Charge"},
+      "month_fast_charge": {"name": "This Month Fast Charge"},
+      "month_charge_cost": {"name": "This Month Estimated Cost"},
+      "trip_count": {"name": "Stored Trip Count"},
+      "recorded_distance": {"name": "Recorded Cumulative Distance"},
+      "month_trip_count": {"name": "This Month Trip Count"},
+      "month_distance": {"name": "This Month Distance"},
+      "last_trip_distance": {"name": "Last Trip Distance"},
+      "last_trip_duration": {"name": "Last Trip Duration"},
+      "last_trip_avg_speed": {"name": "Last Trip Average Speed"},
+      "last_trip_max_speed": {"name": "Last Trip Max Speed"},
+      "last_trip_end": {"name": "Last Trip End"},
+      "parking_recorded_at": {"name": "Parking Position Recorded"},
+      "measured_at": {"name": "Vehicle Measurement Time"},
+      "last_sync": {"name": "HA Sync Time"},
+      "measurement_age": {"name": "Vehicle Data Age"},
+      "cloud_status": {"name": "Cloud Connection Status"}
+    },
+    "binary_sensor": {
+      "on_road": {"name": "On Road"},
+      "estimated_charging": {"name": "Estimated Charging"},
+      "ac_on": {"name": "Air Conditioner On"},
+      "stale": {"name": "Vehicle Data Stale"},
+      "driver_assist": {"name": "Driver Assist Active"},
+      "comma_connection": {"name": "Comma Connection Status"}
+    },
+    "device_tracker": {
+      "parking_position": {"name": "Parking Position"},
+      "vehicle_position": {"name": "Vehicle Position"}
+    }
   }
 }

@@ -8,7 +8,10 @@ async def async_setup_entry(hass,entry,async_add_entities):
 class Position(VehicleEntity,TrackerEntity):
     def __init__(self,entry,parked):
         self.parked=parked
-        self.configure(entry,'parking_position' if parked else 'vehicle_position','주차 위치' if parked else '차량 위치','mdi:parking' if parked else 'mdi:car-connected')
+        if parked:
+            self.configure(entry,'parking_position','Parking Position','mdi:parking','parking_position')
+        else:
+            self.configure(entry,'vehicle_position','Vehicle Position','mdi:car-connected','vehicle_position')
     @property
     def source_type(self):return SourceType.GPS
     @property

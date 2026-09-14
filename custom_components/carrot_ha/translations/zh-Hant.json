@@ -1,0 +1,91 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Carrot HA",
+        "description": "輸入裝置 ID 與一組至少 32 字元的專屬隨機權杖。傳送端需使用相同的認證資訊。",
+        "data": {
+          "device_id": "裝置 ID",
+          "token": "裝置權杖"
+        }
+      }
+    },
+    "error": {
+      "weak_token": "權杖至少需 32 字元。"
+    },
+    "abort": {
+      "already_configured": "裝置已被設定。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "SOC 顯示校正",
+        "description": "設定用於能量推導 SOC 的容量。此設定不會影響直接 BMS SOC，也並非電池健康度測量值。",
+        "data": {
+          "soc_capacity_kwh": "SOC 計算容量 (kWh)",
+          "cloud_url": "Cloudflare Worker 網址 (https://…workers.dev)",
+          "cloud_view_token": "WAYON_VIEW_TOKEN (唯讀金鑰)",
+          "vehicle_model": "車輛型號 (例如 ID. Buzz)"
+        }
+      }
+    },
+    "error": {
+      "invalid_capacity": "請輸入介於 20 至 150 kWh 之間的有限容量值。",
+      "invalid_cloud": "請輸入不包含路徑的 HTTPS Worker 網址與讀取權杖。"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery_soc": {"name": "電池剩餘電量"},
+      "total_odometer": {"name": "總行駛里程"},
+      "outside_temperature": {"name": "車外溫度"},
+      "aux_voltage": {"name": "12V 電池電壓"},
+      "estimated_charging_power": {"name": "充電功率估算"},
+      "battery_current": {"name": "高壓電池電流"},
+      "battery_stored_energy": {"name": "電池儲存能量"},
+      "hv_voltage": {"name": "高壓電池電壓"},
+      "measured_capacity": {"name": "BMS 容量估算"},
+      "soc_capacity": {"name": "SOC 計算容量"},
+      "estimated_range": {"name": "可行駛里程估算"},
+      "blower_voltage": {"name": "送風控制電壓"},
+      "blower_level": {"name": "送風段數"},
+      "driver_seat_heater": {"name": "駕駛座加熱段數"},
+      "passenger_seat_heater": {"name": "副駕駛座加熱段數"},
+      "recirculation": {"name": "內循環訊號"},
+      "current_speed": {"name": "目前車速"},
+      "gps_accuracy": {"name": "GPS 精確度"},
+      "heading": {"name": "行進方向"},
+      "month_charge_total": {"name": "本月充電量估算"},
+      "month_slow_charge": {"name": "本月慢充分類充電量"},
+      "month_fast_charge": {"name": "本月快充分類充電量"},
+      "month_charge_cost": {"name": "本月充電費用估算"},
+      "trip_count": {"name": "已儲存行程數"},
+      "recorded_distance": {"name": "累計記錄里程"},
+      "month_trip_count": {"name": "本月行程數"},
+      "month_distance": {"name": "本月行駛里程"},
+      "last_trip_distance": {"name": "最近行程距離"},
+      "last_trip_duration": {"name": "最近行程時間"},
+      "last_trip_avg_speed": {"name": "最近行程平均車速"},
+      "last_trip_max_speed": {"name": "最近行程最高車速"},
+      "last_trip_end": {"name": "最近行程結束時間"},
+      "parking_recorded_at": {"name": "停車位置記錄時間"},
+      "measured_at": {"name": "車輛量測時間"},
+      "last_sync": {"name": "HA 同步時間"},
+      "measurement_age": {"name": "車輛資料已過時間"},
+      "cloud_status": {"name": "雲端連線狀態"}
+    },
+    "binary_sensor": {
+      "on_road": {"name": "行駛模式"},
+      "estimated_charging": {"name": "充電中（估算）"},
+      "ac_on": {"name": "空調運作"},
+      "stale": {"name": "車輛資料過時"},
+      "driver_assist": {"name": "駕駛輔助啟用"},
+      "comma_connection": {"name": "Comma 連線狀態"}
+    },
+    "device_tracker": {
+      "parking_position": {"name": "停車位置"},
+      "vehicle_position": {"name": "車輛位置"}
+    }
+  }
+}

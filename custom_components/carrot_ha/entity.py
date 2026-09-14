@@ -4,9 +4,11 @@ from .vehicle import values
 class VehicleEntity:
     _attr_should_poll = False
     _attr_has_entity_name = True
-    def configure(self, entry, key, name, icon):
+    def configure(self, entry, key, name, icon, translation_key=None):
         self.entry, self.key = entry, key
         self._attr_name, self._attr_icon = name, icon
+        if translation_key:
+            self._attr_name_translation_key = translation_key
         self._attr_unique_id = entry.data['device_id'] + '_' + key
         legacy = {'soc_percent':'battery','odometer_km':'odometer','outside_temp_c':'outside_temperature','aux_voltage':'auxiliary_voltage','charge_power_w':'estimated_charging_power'}
         self._object_id = legacy.get(key,key)
