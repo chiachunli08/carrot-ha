@@ -1,6 +1,6 @@
 # 차량 이미지 규격
 
-한국어 | [English](VEHICLE-IMAGE.en.md)
+한국어 | [English](VEHICLE-IMAGE.en.md) | [繁體中文](VEHICLE-IMAGE.zh-TW.md)
 
 일반 사진: 투명 PNG 또는 WebP 권장. 권장 캔버스 1600 × 1000 px (8:5), 최소 권장 800 × 500 px. 차량 전체(미러·타이어 포함)가 들어가도록 하고 차량 주변 여백은 각 방향 약 3~5%만 남깁니다. 정면 사진은 세로가 더 길어도 됩니다. 비율을 강제로 늘리지 마세요.
 

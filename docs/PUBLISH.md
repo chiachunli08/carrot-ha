@@ -1,6 +1,6 @@
 # helico717 계정으로 처음 공개하기
 
-한국어 | [English](PUBLISH.en.md)
+한국어 | [English](PUBLISH.en.md) | [繁體中文](PUBLISH.zh-TW.md)
 
 이 폴더의 소스 파일을 GitHub에 올립니다. 개인 PC의 outputs 전체나 DB 파일을 올리는 것이 아닙니다.
 

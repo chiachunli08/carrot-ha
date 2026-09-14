@@ -1,6 +1,6 @@
 # Carrot HA — Volkswagen MEB / Hyundai IONIQ 5
 
-한국어 | [English](README.en.md)
+한국어 | [English](README.en.md) | [繁體中文](README.zh-TW.md)
 
 Carrotpilot이 실행 중인 콤마에서 차량 정보를 수집하여 Cloudflare에 저장하고 Home Assistant에서 확인합니다. 주행 경로, 배터리 잔량, 충전 추정 기록, 최근 7일 배터리 그래프를 제공합니다. 차량 원격 제어 기능은 없습니다.
 

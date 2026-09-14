@@ -1,6 +1,6 @@
 # Publishing
 
-[한국어](PUBLISH.md) | English | [Overview](../README.en.md)
+[한국어](PUBLISH.md) | English | [繁體中文](PUBLISH.zh-TW.md) | [Overview](../README.en.md)
 
 Upload the repository source, not the entire local outputs directory or your databases.
 

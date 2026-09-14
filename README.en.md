@@ -1,6 +1,6 @@
 # Carrot HA — Volkswagen MEB / Hyundai IONIQ 5
 
-[한국어](README.md) | English
+[한국어](README.md) | English | [繁體中文](README.zh-TW.md)
 
 Collect vehicle data on a comma device running Carrotpilot, store it in your own Cloudflare account, and view it in Home Assistant (HA). Features include trip routes, battery state of charge (SOC), estimated charging records, and a seven-day battery history chart. Remote vehicle control is not supported.
 

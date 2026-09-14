@@ -1,6 +1,6 @@
 # 처음 설치하기
 
-한국어 | [English](INSTALL.en.md)
+한국어 | [English](INSTALL.en.md) | [繁體中文](INSTALL.zh-TW.md)
 
 대상: HA가 실행 중이며 콤마 SSH 접속을 할 수 있는 사용자. Carrotpilot은 차량에서 정상 실행 중이어야 합니다. 공장 초기화 기기는 먼저 제작자 안내로 Carrotpilot을 설치하세요. 브랜치 이름만 같다고 데이터 호환이 보장되지는 않습니다.
 

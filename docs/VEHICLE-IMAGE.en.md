@@ -1,6 +1,6 @@
 # Vehicle image requirements
 
-[한국어](VEHICLE-IMAGE.md) | English | [Overview](../README.en.md)
+[한국어](VEHICLE-IMAGE.md) | English | [繁體中文](VEHICLE-IMAGE.zh-TW.md) | [Overview](../README.en.md)
 
 Use transparent PNG or WebP where possible. Recommended canvas: **1600 × 1000 px (8:5)**; recommended minimum: 800 × 500 px. Include the entire vehicle, mirrors and tires, with roughly 3–5% margin around it. Front views can use a taller aspect ratio. Do not stretch the vehicle.
 

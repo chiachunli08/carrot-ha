@@ -1,6 +1,6 @@
 # First-time installation
 
-[한국어](INSTALL.md) | English | [Overview](../README.en.md)
+[한국어](INSTALL.md) | English | [繁體中文](INSTALL.zh-TW.md) | [Overview](../README.en.md)
 
 This guide assumes HA is already running and you can connect to your comma device over SSH. Carrotpilot must already work on your vehicle. For a factory-reset device, install Carrotpilot following its maintainer's instructions first. A matching branch name alone does not guarantee compatibility.
 
