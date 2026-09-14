@@ -52,14 +52,14 @@ cd /data/id4-collector
 python3 configure.py
 ```
 
-Enter your Worker URL, the same device ID used in HA, and the UPLOAD token. Then run:
+Enter your Worker URL, the same device ID used in HA, the UPLOAD token, and the vehicle profile (`vw_meb` or `ioniq5`). Then run:
 
 ```bash
 PYTHONPATH="/data/openpilot/pydeps:/data/openpilot${PYTHONPATH:+:$PYTHONPATH}" /usr/local/venv/bin/python3 install.py
 python3 /data/id4-collector/status.py >&2
 ```
 
-The installer checks the startup script and DBC structure before registering automatic startup. If it reports an unsupported startup file or missing module, report the error and branch information instead of bypassing the check. The collector is a separate process and consumes additional memory.
+The installer checks the startup script and, for the MEB profile, the DBC structure before registering automatic startup. If it reports an unsupported startup file or missing module, report the error and branch information instead of bypassing the check. The collector is a separate process and consumes additional memory.
 
 ## 4. Validate your MEB vehicle
 
@@ -71,6 +71,14 @@ The installer checks the startup script and DBC structure before registering aut
 
 ID. Buzz has not yet been validated on a real vehicle. Record the model year, battery specification, Carrotpilot branch, and commit when reporting compatibility, excluding personal information and tokens.
 
+## 5. Validate IONIQ 5
+
+1. First confirm the OVMS IONIQ 5 module is active and its BMS SOC is updating.
+2. This mode works only when comma and OVMS can both observe the same BMC CAN.
+3. On an existing installation, run `python3 /data/id4-collector/configure.py --vehicle-profile ioniq5` and reboot. The command preserves existing credentials.
+4. Run `python3 /data/id4-collector/status.py` and confirm `vehicle_profile` is `ioniq5` and `can_fields` includes `soc_percent`.
+5. The displayed SOC is the same direct BMS SOC as OVMS, not a capacity-derived value.
+
 ## Limitations
 
-Charging classification, power, and SOC are estimates. The graph may carry forward the last known value through missing periods, but excludes those carried values from consumption calculations. Automatic retention deletion is not enabled.
+MEB SOC, charging classification, and charging power are estimates. IONIQ 5 SOC is a direct BMS value but updates only while OVMS polling is visible. The graph may carry forward the last known value through missing periods, but excludes those carried values from consumption calculations. Automatic retention deletion is not enabled.

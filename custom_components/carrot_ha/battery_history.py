@@ -22,9 +22,13 @@ def history(archive, device, capacity, zone='Asia/Seoul', now=None):
                 if rd is not None:
                     rd['received_samples']+=1
                     if v.get('stale'):rd['stale_samples']+=1
-                stamp=(v.get('field_measured_at') or {}).get('battery_wh') or v.get('measured_at') or e['observed_at']
+                measured=v.get('field_measured_at') or {}
+                stamp=measured.get('soc_percent') or measured.get('battery_wh') or v.get('measured_at') or e['observed_at']
                 t=datetime.fromisoformat(stamp.replace('Z','+00:00')).timestamp()
-                energy=float(v['battery_wh']);soc=energy/(float(capacity)*1000)*100
+                if isinstance(v.get('soc_percent'), (int, float)):
+                    soc=float(v['soc_percent'])
+                else:
+                    energy=float(v['battery_wh']);soc=energy/(float(capacity)*1000)*100
                 if not math.isfinite(soc) or not 0<=soc<=110 or v.get('stale') or t>now.timestamp():continue
             except (ValueError,TypeError,KeyError):continue
             local=datetime.fromtimestamp(t,tz);day=days.get(str(local.date()))

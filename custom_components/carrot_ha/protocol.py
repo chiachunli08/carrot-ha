@@ -21,7 +21,8 @@ def validate(data):
         raise ValueError('Object payload required')
     bounds = {'soc_percent': (0, 100), 'odometer_km': (0, 1048573),
               'outside_temp_c': (-80, 80), 'aux_voltage': (0, 30),
-              'charge_power_w': (0, 500000), 'latitude': (-90, 90),
+              'charge_power_w': (0, 500000), 'battery_current_a': (-2000, 2000),
+              'hv_voltage': (0, 1000), 'latitude': (-90, 90),
               'longitude': (-180, 180), 'duration_s': (0, 31536000),
               'distance_m': (0, 100000000), 'energy_kwh': (0, 1000)}
     for key, (low, high) in bounds.items():

@@ -10,7 +10,10 @@ class VehicleEntity:
         self._attr_unique_id = entry.data['device_id'] + '_' + key
         legacy = {'soc_percent':'battery','odometer_km':'odometer','outside_temp_c':'outside_temperature','aux_voltage':'auxiliary_voltage','charge_power_w':'estimated_charging_power'}
         self._object_id = legacy.get(key,key)
-        self._attr_device_info = {'identifiers':{('carrot_ha',entry.data['device_id'])},'name':entry.title,'manufacturer':'Volkswagen','model':entry.options.get('vehicle_model','Volkswagen MEB')}
+        model=entry.options.get('vehicle_model','Volkswagen MEB')
+        name=model.lower()
+        manufacturer='Hyundai' if 'ioniq' in name else 'Volkswagen' if any(x in name for x in ('volkswagen','id.','meb')) else 'Carrot HA'
+        self._attr_device_info = {'identifiers':{('carrot_ha',entry.data['device_id'])},'name':entry.title,'manufacturer':manufacturer,'model':model}
     @property
     def suggested_object_id(self): return self._object_id
     @property

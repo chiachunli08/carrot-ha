@@ -20,15 +20,20 @@ def main():
     if subprocess.run(['bash','-n',str(HOOK)]).returncode:raise SystemExit('Existing startup syntax error. Nothing changed.')
     from openpilot.cereal import messaging
     from openpilot.common.params import Params
-    from opendbc.can import CANParser
     if Params().get_bool('IsOnroad'):raise SystemExit('Install while parked/offroad. Nothing changed.')
-    # Check actual DBC compatibility before touching startup.
     import wayon_vehicle_telemetry as reference
-    CANParser('vw_meb',[(x,0) for x in ['Motor_16','HVEM_02','MEB_HVEM_01','BMS_04','Diagnose_01','Klima_Sensor_02','Klima_11','Klima_12']],0)
-    if not (BASE/'connection.json').exists():
+    config_path=BASE/'connection.json'
+    if config_path.exists():
+        config=json.loads(config_path.read_text())
+    else:
         config=json.loads(Path('/data/id4-cloud-import/connection.json').read_text())
-        fd=os.open(BASE/'connection.json',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
+        fd=os.open(config_path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
         with os.fdopen(fd,'w') as f:json.dump(config,f)
+    profile=reference.normalize_vehicle_profile(config.get('vehicle_profile'))
+    # MEB needs its DBC. IONIQ 5 is a passive ISO-TP observer and needs no DBC.
+    if profile=='vw_meb':
+        from opendbc.can import CANParser
+        CANParser('vw_meb',[(x,0) for x in ['Motor_16','HVEM_02','MEB_HVEM_01','BMS_04','Diagnose_01','Klima_Sensor_02','Klima_11','Klima_12']],0)
     if MARKER not in source:
         backup=BASE/'continue.sh.before-carrot-ha'
         if not backup.exists():shutil.copy2(HOOK,backup)
@@ -40,7 +45,7 @@ def main():
         temp.replace(HOOK)
     (BASE/'enabled').touch()
     subprocess.Popen(['bash',str(BASE/'supervisor.sh')],stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
-    print('Installed. Git checkout unchanged. Startup backup: /data/id4-collector/continue.sh.before-carrot-ha')
+    print('Installed '+profile+'. Git checkout unchanged. Startup backup: /data/id4-collector/continue.sh.before-carrot-ha')
     print('Wait 90 seconds, then: python3 /data/id4-collector/status.py')
 
 if __name__=='__main__':main()

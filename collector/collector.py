@@ -1,4 +1,4 @@
-"""Standalone MyID4 CAN reader -> existing Cloudflare API, with durable outbox."""
+"""Standalone vehicle CAN reader -> existing Cloudflare API, with durable outbox."""
 import json
 import os
 import sys
@@ -24,16 +24,19 @@ def main():
     from openpilot.cereal import messaging
     from openpilot.common.params import Params
     import wayon_vehicle_telemetry as reference
+    vehicle_profile=reference.normalize_vehicle_profile(config.get('vehicle_profile'))
     store=Store(STATE/'collector.sqlite3');engine=Engine(store,config['device'])
     sample_lock=threading.Lock();latest_sample={};sample_version=0
     def sample():
         nonlocal latest_sample,sample_version
         while True:
             try:
-                values=reference.sample_vehicle_can(timeout_s=4)
-                with sample_lock:latest_sample=values;sample_version+=1
+                timeout=30 if vehicle_profile=='ioniq5' else 4
+                values=reference.sample_vehicle_can(timeout_s=timeout,vehicle_profile=vehicle_profile)
+                if values or vehicle_profile!='ioniq5':
+                    with sample_lock:latest_sample=values;sample_version+=1
             except Exception as error:print('CAN sample:',type(error).__name__,flush=True)
-            time.sleep(26)
+            time.sleep(0.2 if vehicle_profile=='ioniq5' else 26)
     def upload():
         delay=2
         class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -56,7 +59,7 @@ def main():
     threading.Thread(target=sample,daemon=True).start();threading.Thread(target=upload,daemon=True).start()
     sm=messaging.SubMaster(['carState','gpsLocationExternal','gpsLocation','peripheralState','selfdriveState'])
     params=Params();consumed=-1
-    print('Carrot HA collector started: receive-only CAN, Cloudflare outbox.',flush=True)
+    print('Carrot HA collector started: receive-only CAN, Cloudflare outbox, profile='+vehicle_profile+'.',flush=True)
     while True:
         time.sleep(1);sm.update(0);now=time.time();mono=time.monotonic()
         if now<1735689600:continue
@@ -78,7 +81,7 @@ def main():
         enabled=None
         if sm.valid.get('selfdriveState') and mono-sm.recv_time['selfdriveState']<10:enabled=bool(sm['selfdriveState'].enabled)
         engine.tick(now,params.get_bool('IsOnroad'),gps,sampled,enabled)
-        atomic(STATE/'status.json',{'status':'running','at':now,'onroad':engine.s.get('onroad'),'pending':store.count(),'can_fields':sorted((latest_sample or {}).keys()),'active_trip':bool(engine.s.get('trip'))})
+        atomic(STATE/'status.json',{'status':'running','at':now,'onroad':engine.s.get('onroad'),'pending':store.count(),'vehicle_profile':vehicle_profile,'can_fields':sorted((latest_sample or {}).keys()),'active_trip':bool(engine.s.get('trip'))})
 
 if __name__=='__main__':
     import fcntl

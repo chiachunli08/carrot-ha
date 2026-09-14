@@ -50,14 +50,14 @@ cd /data/id4-collector
 python3 configure.py
 ```
 
-Worker URL, HA와 같은 장치 ID, UPLOAD 토큰을 입력합니다. 이어서:
+Worker URL, HA와 같은 장치 ID, UPLOAD 토큰, 차량 프로필(`vw_meb` 또는 `ioniq5`)을 입력합니다. 이어서:
 
 ```bash
 PYTHONPATH="/data/openpilot/pydeps:/data/openpilot${PYTHONPATH:+:$PYTHONPATH}" /usr/local/venv/bin/python3 install.py
 python3 /data/id4-collector/status.py >&2
 ```
 
-install.py는 시작 파일과 DBC 구조를 확인하고 자동 실행을 등록합니다. 지원하지 않는 시작 파일/모듈 오류가 나오면 강제로 우회하지 말고 브랜치 정보를 포함하여 문의하세요. 수집기는 별도 프로세스이므로 추가 메모리를 사용합니다. 모든 브랜치에서 무부하를 보장하지 않습니다.
+install.py는 시작 파일과, MEB 프로필의 경우 DBC 구조를 확인하고 자동 실행을 등록합니다. 지원하지 않는 시작 파일/모듈 오류가 나오면 강제로 우회하지 말고 브랜치 정보를 포함하여 문의하세요. 수집기는 별도 프로세스이므로 추가 메모리를 사용합니다. 모든 브랜치에서 무부하를 보장하지 않습니다.
 
 ## 4. 다른 MEB 차량의 확인 순서
 
@@ -69,6 +69,14 @@ install.py는 시작 파일과 DBC 구조를 확인하고 자동 실행을 등�
 
 ID. Buzz는 현재 실차 검증 전입니다. 연식, 배터리 사양, Carrotpilot 브랜치와 commit을 기록해 주세요. 개인정보·토큰을 제외한 오류로 호환성을 확인합니다.
 
+## 5. IONIQ 5 확인
+
+1. OVMS에서 IONIQ 5 차량 모듈을 활성화하고 BMS SOC가 갱신되는지 먼저 확인합니다.
+2. 콤마와 OVMS가 같은 BMC CAN을 볼 수 있는 연결에서만 사용할 수 있습니다.
+3. 기존 설치는 `python3 /data/id4-collector/configure.py --vehicle-profile ioniq5`를 실행하고 재부팅합니다. 기존 인증 정보는 유지됩니다.
+4. `python3 /data/id4-collector/status.py`의 `vehicle_profile`이 `ioniq5`이고 `can_fields`에 `soc_percent`가 포함되는지 확인합니다.
+5. 표시되는 SOC는 용량 환산값이 아닌 OVMS와 같은 BMS SOC입니다.
+
 ## 알려진 범위
 
-충전 분류/전력/SOC는 추정값입니다. 상세 표본이 없는 구간은 그래프의 마지막 확인값으로 표시할 수 있지만 사용량 계산에는 포함하지 않습니다. 자동 보관 기간 삭제는 적용하지 않았습니다.
+MEB SOC와 충전 분류/전력은 추정값입니다. IONIQ 5 SOC는 직접 BMS 값이지만 OVMS 폴링이 보이는 동안에만 갱신됩니다. 상세 표본이 없는 구간은 그래프의 마지막 확인값으로 표시할 수 있지만 사용량 계산에는 포함하지 않습니다. 자동 보관 기간 삭제는 적용하지 않았습니다.

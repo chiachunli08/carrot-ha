@@ -88,7 +88,7 @@ class Engine:
             if sampled:s['measured_at']=stamp(now)
             wh=sampled.get('battery_wh')
             prev=s.get('energy_sample')
-            power=s['vehicle'].get('charge_power_w') if wh is not None else None
+            power=sampled.get('charge_power_w') if wh is None else s['vehicle'].get('charge_power_w')
             if wh is not None:
                 if prev:
                     dt=now-prev['at'];delta=wh-prev['wh']
@@ -113,15 +113,22 @@ class Engine:
                 if onroad:power=0
             if s.get('charge') and (onroad or now-s.get('last_charge_increase',now)>=300):
                 s['charge_sessions'].append(s.pop('charge'));s['charge_sessions']=s['charge_sessions'][-50:]
-            s['vehicle']['charging']=None if wh is None or power is None else power>=300
-            s['vehicle']['charge_power_w']=None if wh is None else round(power or 0)
+            if wh is not None:
+                s['vehicle']['charging']=None if power is None else power>=300
+                s['vehicle']['charge_power_w']=round(power or 0)
+            else:
+                if 'charging' in sampled:s['vehicle']['charging']=bool(sampled['charging']) and not onroad
+                if power is not None:s['vehicle']['charge_power_w']=0 if onroad else round(power)
         interval=30 if onroad else 60
         if changed or now-s.get('last_upload',0)>=interval:
             vehicle=dict(s['vehicle'])
-            measured=s['field_measured_at'].get('battery_wh') or s.get('measured_at')
+            measured=s['field_measured_at'].get('battery_wh') or s['field_measured_at'].get('soc_percent') or s.get('measured_at')
             age=now-datetime.fromisoformat(measured).timestamp() if measured else 999999
             vehicle.update(field_measured_at=s['field_measured_at'],measured_at=measured,stale=age>120,charge_months=s['charge_months'],charge_sessions=s['charge_sessions'],parking=s.get('parking'))
-            if vehicle.get('battery_wh') is not None:vehicle.update(capacity_wh=78000,soc_percent=min(100,vehicle['battery_wh']/780))
+            if vehicle.get('battery_wh') is not None:
+                if vehicle.get('soc_percent') is None:
+                    vehicle.update(capacity_wh=78000,soc_percent=min(100,vehicle['battery_wh']/780))
+                vehicle.setdefault('soc_source','energy_based_calibration')
             events.append(('/api/telemetry',{'deviceId':self.device,'updatedAt':stamp(now),'onroad':int(onroad),'ignition':int(onroad),'enabled':enabled,'gps':s.get('gps') or {},'vehicle':vehicle}))
             s['last_upload']=now
         if events or now-self.last_saved>=5:

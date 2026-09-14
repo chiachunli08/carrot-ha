@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""ID.4(MEB) 차량 상태를 Wayon Cloud로 올린다.
+"""MEB 또는 IONIQ 5 차량 상태를 Wayon Cloud로 올린다.
 
 배터리 잔량·오도미터·외기온·12V 전압과 GPS를 주기적으로 POST해서 휴대폰 앱이
 차 상태를 볼 수 있게 한다.
 
-배터리는 CAN(Motor_16)에서 직접 디코딩한다. carState는 card 프로세스가 온로드에서만
-돌아 주차 중엔 비어 있어, 충전 중 감시가 되려면 CAN 직접 샘플링이어야 한다.
-충전 전력은 배터리량 증가 기울기로 추정한다(전용 신호 MEB_HVEM_01 수신 여부 미검증).
+MEB 배터리는 CAN(Motor_16)에서 직접 디코딩한다. IONIQ 5는 같은 CAN에
+연결된 OVMS가 이미 요청한 BMC 22 0101 응답을 수동적으로 관찰하고 BMS SOC를
+그대로 쓴다. IONIQ 5 모드는 CAN 프레임을 전송하지 않는다.
 
 - 주행 중: TELEMETRY_ONROAD_S 간격
 - 주차 중: TELEMETRY_OFFROAD_S 간격 + 배터리 변화 감지 시 즉시
@@ -21,6 +21,7 @@ import requests
 
 from openpilot.cereal import messaging
 from openpilot.common.params import Params
+from ioniq5 import Ioniq5OvmsDecoder
 
 CONFIG_PATH = Path(os.getenv("WAYON_CLOUD_CONFIG", "/data/wayon_cloud/config.json"))
 STATE_PATH = Path(os.getenv("WAYON_VEHICLE_STATE", "/data/wayon_cloud/vehicle_state.json"))
@@ -47,6 +48,18 @@ CHARGE_PRICE_FAST = 320.0
 
 # can 구독 소켓 (재사용)
 _CAN_SOCK = None
+_IONIQ5_DECODER = Ioniq5OvmsDecoder()
+
+VEHICLE_PROFILES = ("vw_meb", "ioniq5")
+
+
+def normalize_vehicle_profile(value: str | None) -> str:
+  profile = str(value or "vw_meb").strip().lower().replace("-", "_")
+  aliases = {"meb": "vw_meb", "id4": "vw_meb", "hyundai_ioniq5": "ioniq5", "ioniq_5": "ioniq5"}
+  profile = aliases.get(profile, profile)
+  if profile not in VEHICLE_PROFILES:
+    raise ValueError(f"Unsupported vehicle profile: {profile}")
+  return profile
 
 
 def read_config() -> dict:
@@ -164,7 +177,40 @@ def merge_last_known(vehicle: dict, last_known: dict) -> dict:
   return merged
 
 
-def sample_vehicle_can(timeout_s: float = 6.0) -> dict:
+def _can_socket():
+  global _CAN_SOCK
+  if _CAN_SOCK is None:
+    _CAN_SOCK = messaging.sub_sock("can", timeout=200)
+    time.sleep(0.5)
+    messaging.drain_sock(_CAN_SOCK)
+  return _CAN_SOCK
+
+
+def sample_ioniq5_can(timeout_s: float = 30.0) -> dict:
+  """Observe the next OVMS 22 0101 response and return its direct BMS SOC."""
+  sock = _can_socket()
+  deadline = time.monotonic() + max(0.5, timeout_s)
+  while time.monotonic() < deadline:
+    messages = messaging.drain_sock(sock)
+    if not messages:
+      time.sleep(0.01)
+      continue
+    for message in messages:
+      for frame in message.can:
+        result = _IONIQ5_DECODER.feed(frame.address, bytes(frame.dat), frame.src)
+        if result:
+          return result
+  return {}
+
+
+def sample_vehicle_can(timeout_s: float = 6.0, vehicle_profile: str = "vw_meb") -> dict:
+  profile = normalize_vehicle_profile(vehicle_profile)
+  if profile == "ioniq5":
+    return sample_ioniq5_can(timeout_s)
+  return sample_meb_can(timeout_s)
+
+
+def sample_meb_can(timeout_s: float = 6.0) -> dict:
   """차량 값들을 CAN에서 짧게 샘플링한다.
 
   carState는 card 프로세스가 온로드에서만 돌아 주차 중엔 비어 있다.
@@ -193,12 +239,7 @@ def sample_vehicle_can(timeout_s: float = 6.0) -> dict:
 
   # 소켓을 매번 새로 열면 첫 호출(프로세스 기동 직후)에 연결 워밍업 때문에 아무것도 못 받는다.
   # 한 번 만들어 재사용한다.
-  global _CAN_SOCK
-  if _CAN_SOCK is None:
-    _CAN_SOCK = messaging.sub_sock("can", timeout=200)
-    time.sleep(0.5)          # 구독 성립 대기
-    messaging.drain_sock(_CAN_SOCK)
-  sock = _CAN_SOCK
+  sock = _can_socket()
   deadline = time.monotonic() + max(0.5, timeout_s)
   hv_voltage = None
   capacity_ah = None

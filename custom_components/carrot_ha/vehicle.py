@@ -7,11 +7,16 @@ def values(runtime):
     data.update(runtime.get('summary', {}))
     capacity = runtime['entry'].options.get('soc_capacity_kwh', 78.0)
     if data.get('battery_wh') is not None:
-        data['soc_percent'] = calibrated_soc(data['battery_wh'], capacity)
+        if data.get('soc_percent') is None:
+            data['soc_percent'] = calibrated_soc(data['battery_wh'], capacity)
+        data.setdefault('soc_source', 'energy_based_calibration')
         data['battery_kwh'] = data['battery_wh'] / 1000
     for source, target in [('measured_capacity_wh','measured_capacity_kwh'),('capacity_wh','capacity_kwh')]:
         if isinstance(data.get(source), (int,float)): data[target] = data[source] / 1000
-    data['soc_capacity_kwh'] = capacity
+    if data.get('battery_wh') is not None or data.get('soc_source') == 'energy_based_calibration':
+        data['soc_capacity_kwh'] = capacity
+    else:
+        data.pop('soc_capacity_kwh', None)
     gps = data.get('gps') or {}
     for source, target in [('latitude','latitude'),('longitude','longitude'),('accuracyM','gps_accuracy_m'),('bearingDeg','bearing_deg')]:
         data[target] = gps.get(source)

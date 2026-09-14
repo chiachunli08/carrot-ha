@@ -8,6 +8,7 @@ FIELDS = {
  'outside_temp_c':('외기 온도','°C','mdi:thermometer','temperature'),
  'aux_voltage':('12V 배터리 전압','V','mdi:car-battery','voltage'),
  'charge_power_w':('충전 전력 추정','W','mdi:ev-station','power'),
+ 'battery_current_a':('고전압 배터리 전류','A','mdi:current-dc','current'),
  'battery_kwh':('배터리 저장 에너지','kWh','mdi:battery-high','energy'),
  'hv_voltage':('고전압 배터리 전압','V','mdi:lightning-bolt','voltage'),
  'measured_capacity_kwh':('BMS 용량 추정','kWh','mdi:battery-heart-variant','energy'),
@@ -61,5 +62,9 @@ class VehicleSensor(VehicleEntity,SensorEntity):
     @property
     def extra_state_attributes(self):
         attrs=super().extra_state_attributes
-        if self.key=='soc_percent': attrs.update(nominal_net_kwh=78,nominal_gross_kwh=82,soc_capacity_kwh=self.entry.options.get('soc_capacity_kwh',78),soc_source='energy_based_calibration')
+        if self.key=='soc_percent':
+            source=self.data.get('soc_source') or 'energy_based_calibration'
+            attrs['soc_source']=source
+            if source=='energy_based_calibration':
+                attrs.update(nominal_net_kwh=78,nominal_gross_kwh=82,soc_capacity_kwh=self.entry.options.get('soc_capacity_kwh',78))
         return attrs

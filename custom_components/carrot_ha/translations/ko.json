@@ -21,7 +21,7 @@
     "step": {
       "init": {
         "title": "Cloudflare 연결 및 SOC 보정",
-        "description": "차량에 맞는 SOC 계산 용량을 입력하세요. 차량별 용량이 다르며 열화율 측정값이 아닙니다.",
+        "description": "에너지 기반 SOC 계산에 사용할 용량입니다. 직접 BMS SOC에는 적용되지 않으며 열화율 측정값도 아닙니다.",
         "data": {
           "soc_capacity_kwh": "SOC 계산 용량 (kWh)",
           "cloud_url": "Cloudflare Worker 주소 (https://…workers.dev)",

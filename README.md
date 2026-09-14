@@ -1,10 +1,10 @@
-# Carrot HA — Volkswagen MEB
+# Carrot HA — Volkswagen MEB / Hyundai IONIQ 5
 
 한국어 | [English](README.en.md)
 
 Carrotpilot이 실행 중인 콤마에서 차량 정보를 수집하여 Cloudflare에 저장하고 Home Assistant에서 확인합니다. 주행 경로, 배터리 잔량, 충전 추정 기록, 최근 7일 배터리 그래프를 제공합니다. 차량 원격 제어 기능은 없습니다.
 
-ID.4에서 사용한 구현을 일반화한 버전입니다. ID. Buzz 등 다른 MEB 차량과 모든 Carrotpilot 브랜치의 호환성을 보장하지 않습니다. HA 2026.3 이상이 필요하며 다른 차량은 아래 사전 확인을 거치세요. 현재 대시보드 API는 HA 관리자 계정만 사용할 수 있습니다.
+ID.4에서 사용한 MEB 구현과 OVMS 폴링을 함께 쓰는 IONIQ 5 프로필을 제공합니다. ID. Buzz 등 다른 MEB 차량과 모든 Carrotpilot 브랜치의 호환성을 보장하지 않습니다. HA 2026.3 이상이 필요하며 현재 대시보드 API는 HA 관리자 계정만 사용할 수 있습니다.
 
 ## 처음 설치
 
@@ -12,7 +12,7 @@ ID.4에서 사용한 구현을 일반화한 버전입니다. ID. Buzz 등 다른
 2. HACS → 오른쪽 위 메뉴 → Custom repositories에서 `https://github.com/helico717/carrot-ha`를 추가합니다. 유형은 **Integration**입니다.
 3. Carrot HA를 다운로드하고 HA를 재시작합니다.
 4. 설정 → 기기 및 서비스 → 통합 추가 → Carrot HA. 정해둔 장치 ID와 전용 토큰을 입력합니다.
-5. 통합의 구성에서 Worker 주소, 읽기 토큰, 차량 모델, SOC 계산 용량을 입력합니다. 배터리 용량은 차량별로 확인하세요.
+5. 통합의 구성에서 Worker 주소, 읽기 토큰, 차량 모델, SOC 계산 용량을 입력합니다. SOC 계산 용량은 MEB 에너지 기반 SOC에만 사용되며 IONIQ 5의 직접 BMS SOC에는 적용되지 않습니다.
 6. 대시보드 리소스에 `/carrot_ha_static/carrot-dashboard.js`을 **JavaScript 모듈**로 추가합니다.
 7. 수동 카드에 다음을 입력합니다. 장치 ID는 통합과 콤마에 입력한 값과 같아야 합니다.
 
@@ -35,13 +35,22 @@ vehicle_name: ID. Buzz
 - 충전 전력은 에너지 증가량으로 추정하며 완속/급속 구분도 추정입니다. 충전기 계량값이 아닙니다.
 - 인터넷이 끊겨도 수집된 미전송 기록은 재전송합니다. 전원 꺼짐 또는 CAN 미수신 구간은 복원할 수 없습니다.
 
+## Hyundai IONIQ 5
+
+- 콤마와 OVMS가 같은 BMC CAN을 볼 수 있어야 하며, OVMS의 IONIQ 5 차량 모듈이 `22 0101`을 주기적으로 폴링하고 있어야 합니다.
+- `configure.py`에서 차량 프로필을 `ioniq5`로 선택하세요. 수집기는 OVMS의 `0x7EC` ISO-TP 응답을 수동적으로 재조립하며 CAN에 아무것도 전송하지 않습니다.
+- 기존 수집기는 `python3 /data/id4-collector/configure.py --vehicle-profile ioniq5`를 실행한 뒤 재부팅하세요. 기존 인증 정보는 그대로 유지됩니다.
+- SOC는 OVMS와 동일하게 BMS SOC 바이트의 0.5% 단위 값을 직접 사용합니다. 배터리 용량으로 다시 계산하지 않습니다.
+- BMS 전류·전압과 순간 충전 전력도 응답에 포함되면 표시합니다. 에너지 카운터가 필요한 누적 충전량 및 충전 세션 기록은 이 프로필에서 만들지 않습니다.
+- OVMS 폴링 응답이 콤마의 `can` 서비스에 보이지 않으면 SOC는 갱신되지 않습니다. 설치 후 `status.py`의 `can_fields`에 `soc_percent`가 보이는지 확인하세요.
+
 ## 개인정보
 
 사용자마다 본인의 Cloudflare 계정/서버를 사용합니다. 이 저장소로 토큰, DB, 주행 경로, 로그, 연결 설정을 올리지 마세요. 운영자는 사용자들의 데이터를 모으는 공용 서버를 제공하지 않습니다.
 
 ## 출처
 
-Cloudflare 및 CAN 참조 코드: `cloudflare/SOURCE.md`, `cloudflare/LICENSE.upstream`, `collector/LICENSE.reference`.
+Cloudflare 및 CAN 참조 코드: `cloudflare/SOURCE.md`, `cloudflare/LICENSE.upstream`, `collector/LICENSE.reference`, `collector/LICENSE.ovms-reference`.
 지도: Leaflet 및 OpenStreetMap. 지도 출처 표시는 유지해야 합니다.
 첨부 브랜드 이미지: 프로젝트 소유자가 제공한 이미지입니다. Carrotpilot·Volkswagen·Home Assistant의 공식 제품이나 공식 인증 통합이 아닙니다.
 
